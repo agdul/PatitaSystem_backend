@@ -1,6 +1,6 @@
-# CellShop - Backend
+# PatitaSystem - Backend
 
-Proyecto backend del e-commerce **CellShop**, desarrollado con **Node.js**, **Express**, **Sequelize** y **PostgreSQL**. Este repositorio expone una API RESTful que administra usuarios, productos, carritos, ventas, métodos de pago, autenticación mediante JWT, y más.
+Proyecto backend del e-commerce **PatitaSystem**, desarrollado con **Node.js**, **Express**, **Sequelize** y **PostgreSQL**. Este repositorio expone una API RESTful que administra usuarios, productos, carritos, ventas, métodos de pago, autenticación mediante JWT, y más.
 
 ## 📦 Tecnologías principales
 
@@ -20,8 +20,8 @@ Proyecto backend del e-commerce **CellShop**, desarrollado con **Node.js**, **Ex
 ### 1. Clonar el repositorio
 
 ```
-git clone https://github.com/agdul/CellShop_backend.git
-cd CellShop_backend
+git clone https://github.com/agdul/PatitaSystem_backend.git
+cd PatitaSystem_backend
 ```
 
 ### 2. Instalar las dependencias
@@ -50,7 +50,7 @@ JWT_EXPIRES=24h
 
 ```
 
-> Asegurate de tener una base de datos PostgreSQL llamada `cellshop` creada previamente.
+> Asegurate de tener una base de datos PostgreSQL llamada `bd_patita` creada previamente.
 
 ### 4. Crear y ejecutar migraciones
 
@@ -125,14 +125,6 @@ También se incluye un archivo `documentación.http` con pruebas prediseñadas (
 * Métodos de pago (relación N:M)
 * Consultas de contacto y respuestas del admin
 * Gestión por roles y seguridad de endpoints
-
----
-
-## 🔗 Frontend
-
-Este backend trabaja en conjunto con el siguiente repositorio frontend:
-
-👉 https://github.com/TongaCasla/CellShop_front
 
 ---
 
