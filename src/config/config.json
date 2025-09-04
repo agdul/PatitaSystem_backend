@@ -1,24 +1,52 @@
 {
-    "development": {
-      "username": "postgres",
-      "password": "root",
-      "database": "bd_patita",
-      "host": "localhost",
-      "dialect": "postgres",
-      "db_port": 5432
+  "development": {
+    "username": "ADM_Patita",
+    "password": "patitasystem",
+    "database": "db_patitaSystem",
+    "host": "localhost",
+    "port": 1433,
+    "dialect": "mssql",
+    "logging": false,
+    "dialectOptions": {
+      "options": {
+        "encrypt": false,
+        "trustServerCertificate": true,
+        "requestTimeout": 30000
+      }
     },
-    "test": {
-      "username": "root",
-      "password": null,
-      "database": "database_test",
-      "host": "127.0.0.1",
-      "dialect": "postgres"
+    "define": { "timestamps": true }
+  },
+  "test": {
+    "username": "ADM_Patita",
+    "password": "patitasystem",
+    "database": "db_patitaSystem_test",
+    "host": "localhost",
+    "port": 1433,
+    "dialect": "mssql",
+    "logging": false,
+    "dialectOptions": {
+      "options": {
+        "encrypt": false,
+        "trustServerCertificate": true
+      }
     },
-    "production": {
-      "username": "root",
-      "password": null,
-      "database": "database_production",
-      "host": "127.0.0.1",
-      "dialect": "postgres"
-    }
+    "define": { "timestamps": true }
+  },
+  "production": {
+    "username": "ADM_Patita",
+    "password": "CAMBIAR_EN_PROD",
+    "database": "db_patitaSystem",
+    "host": "127.0.0.1",
+    "port": 1433,
+    "dialect": "mssql",
+    "logging": false,
+    "dialectOptions": {
+      "options": {
+        "encrypt": true,
+        "trustServerCertificate": true,
+        "requestTimeout": 30000
+      }
+    },
+    "define": { "timestamps": true }
   }
+}
