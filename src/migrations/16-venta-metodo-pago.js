@@ -26,7 +26,7 @@ module.exports = {
           key: 'id_metodo_pago'
         },
         onUpdate: 'CASCADE',
-        onDelete: 'RESTRICT'
+        onDelete: 'NO ACTION'
       },
       monto: {
         type: Sequelize.DECIMAL(10, 2),

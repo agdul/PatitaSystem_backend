@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 async function generarToken(usuario) {
-    const llaveSecreta = process.env.SECRET_KEY
+    const llaveSecreta = process.env.JWT_SECRET
     const payload = {
         id_usuario: usuario.id_usuario,
         nombre_usuario: usuario.nombre_usuario,
@@ -19,7 +19,7 @@ async function generarToken(usuario) {
 }
 
 async function verificarToken(token) {
-    const llaveSecreta = process.env.SECRET_KEY
+    const llaveSecreta = process.env.JWT_SECRET
     try {
         const decoded = jwt.verify(token,llaveSecreta);
         return decoded;

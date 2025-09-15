@@ -20,7 +20,7 @@ module.exports = {
           key: 'id_categoria'
         },
         onUpdate: 'CASCADE',
-        onDelete: 'RESTRICT'
+        onDelete: 'NO ACTION'
       },
       estado_producto: {
         type: Sequelize.STRING,

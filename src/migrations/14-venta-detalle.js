@@ -26,7 +26,7 @@ module.exports = {
           key: 'id_presentacion'
         },
         onUpdate: 'CASCADE',
-        onDelete: 'RESTRICT'
+        onDelete: 'NO ACTION'
       },
       cantidad: {
         type: Sequelize.INTEGER,

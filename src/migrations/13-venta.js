@@ -16,7 +16,7 @@ module.exports = {
           key: 'id_usuario'
         },
         onUpdate: 'CASCADE',
-        onDelete: 'RESTRICT'
+        onDelete: 'NO ACTION'
       },
       fecha: {
         type: Sequelize.DATE,

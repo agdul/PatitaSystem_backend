@@ -16,7 +16,7 @@ module.exports = {
           key: 'id_provincia'
         },
         onUpdate: 'CASCADE',
-        onDelete: 'RESTRICT'
+        onDelete: 'NO ACTION'
       },
       nombre_localidad: {
         type: Sequelize.STRING,

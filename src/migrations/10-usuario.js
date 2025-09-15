@@ -16,7 +16,7 @@ module.exports = {
           key: 'id_direccion'
         },
         onUpdate: 'CASCADE',
-        onDelete: 'RESTRICT'
+        onDelete: 'NO ACTION'
       },
       id_rol: {
         type: Sequelize.INTEGER,
@@ -26,7 +26,7 @@ module.exports = {
           key: 'id_rol'
         },
         onUpdate: 'CASCADE',
-        onDelete: 'RESTRICT'
+        onDelete: 'NO ACTION'
       },
       id_genero: {
         type: Sequelize.INTEGER,
@@ -36,7 +36,7 @@ module.exports = {
           key: 'id_genero'
         },
         onUpdate: 'CASCADE',
-        onDelete: 'RESTRICT'
+        onDelete: 'NO ACTION'
       },
       dni_usuario: {
         type: Sequelize.STRING,

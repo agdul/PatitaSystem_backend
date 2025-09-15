@@ -20,8 +20,8 @@ module.exports = {
           key: 'id_linea'
         },
         onUpdate: 'CASCADE',
-        onDelete: 'RESTRICT'
-      }
+        onDelete: 'NO ACTION',
+      },
     });
   },
 

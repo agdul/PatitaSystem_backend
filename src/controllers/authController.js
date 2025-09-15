@@ -50,12 +50,12 @@ class AuthController{
             ...data,
             password: hashedPassword,
           });
-          //console.log("🧠 Usuario para token:", newUser.toJSON());
-          const token = await generarToken(newUser.toJSON());
-          if (!token) {
-            throw new AppError("Error al generar el token", 500);
-          }
-          return { ...newUser.toJSON(), token: token };
+        //   //console.log("🧠 Usuario para token:", newUser.toJSON());
+        //   const token = await generarToken(newUser.toJSON());
+        //   if (!token) {
+        //     throw new AppError("Error al generar el token", 500);
+        //   }
+          return { ...newUser.toJSON() };
         } catch (error) {
             console.error('Error en registrarUsuario:', error);
             if (error instanceof AppError) {
