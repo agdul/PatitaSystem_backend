@@ -6,11 +6,11 @@ const { authAdmin } = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    res.json({
-        message: 'Bienvenido a la API de usuarios'
-    });
-});
+// router.get('/', (req, res) => {
+//     res.json({
+//         message: 'Bienvenido a la API de usuarios'
+//     });
+// });
 
 
 //---------------------------------------------------------------

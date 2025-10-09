@@ -99,7 +99,7 @@ class UsuarioService {
     
             const usuarioExistente = await this.existeByUsuarioEdit(data.usuario, id);
             if (usuarioExistente) {
-                throw new AppError("El nombre de usuario ya está en uso por otro usuario", 400);
+                throw new AppError("El usuario ya está en uso por otro usuario", 400);
             }
             const emailExistente = await this.existeByEmailEdit(data.email_usuario, id);
             if (emailExistente) {

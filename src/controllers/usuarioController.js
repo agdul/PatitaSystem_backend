@@ -31,7 +31,7 @@ class  UsuarioController{
             if (password) {
                 data.password = await hashPassword(data.password);
             }
-            data.id_rol = 2; // Asigno rol usuario x defecto
+            //data.id_rol = 2; // Asigno rol usuario x defecto
 
             //console.log('Contraseña después de hashear:', data.password);
             //await this.existeByNombre(nombre_usuario);
