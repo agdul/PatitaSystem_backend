@@ -5,6 +5,13 @@ const Op = Sequelize.Op;
 const AppError = require('../utilits/helpers/errors');
 
 class UsuarioService {
+
+  ciLike(field, text) {
+  // podés ajustar el tamaño si querés: NVARCHAR(255), NVARCHAR(100)
+  const casted = Sequelize.cast(Sequelize.col(field), 'NVARCHAR(4000)');
+  return Sequelize.where(Sequelize.fn('LOWER', casted), { [Op.like]: text.toLowerCase() });
+}
+
     constructor() {
         this.usuario = Usuario;
     }
@@ -58,14 +65,10 @@ class UsuarioService {
         const t = await db.sequelize.transaction(); // Crear transacción
         try {
             //-------Validaciones----------------------
-
-            //----- this.usuario valido 
-            // Verificar si el email ya existe 
-            await this.existeByEmail(data.email_usuario);
-            // Verificar si el usuario ya existe
-            await this.existeByUsuario(data.usuario); 
-            // Verificar si el dni ya existe
-            await this.existeByDni(data.dni_usuario);
+            await this.existeByEmail(data.email_usuario);      // email único
+            await this.existeByUsuario(data.usuario);          // username único
+            await this.existeByDni(data.dni_usuario);          // dni único
+            //--------------------------------------------
             // Validar genero exista 
             //await this.existeGenero(data.id_genero);
             // Validar rol exista
@@ -209,6 +212,69 @@ class UsuarioService {
             throw new AppError('El DNI ya está en uso', 400);
         }
     };
+
+
+
+
+
+// Búsqueda y filtrado de usuarios (MSSQL-friendly)
+  /**
+   * search: búsqueda incremental + filtros exactos
+   * - q: texto libre (>= 2 chars). Busca en:
+   *   nombre_usuario, apellido_usuario, dni_usuario, telefono_usuario, email_usuario, usuario
+   * - email: match exacto sobre email_usuario
+   * - dni:   match exacto sobre dni_usuario
+   * - telefono: match exacto sobre telefono_usuario
+   * - limit/offset: paginación (limit máx 100). En MSSQL requiere ORDER BY estable.
+   *
+   * Devuelve un set "liviano" ideal para autocompletar.
+   * Ajustá los nombres de columna si en tu modelo difieren.
+   */
+async search({ q, email, dni, telefono, limit = 10, offset = 0 }) {
+    const whereParts = [];
+
+    if (email) whereParts.push({ email_usuario: String(email).trim() });
+    if (dni) whereParts.push({ dni_usuario: String(dni).trim() });
+    if (telefono) whereParts.push({ celular_usuario: String(telefono).trim() });
+
+    if (q && String(q).trim().length >= 2) {
+      const text = `%${String(q).trim()}%`;
+      whereParts.push({
+        [Op.or]: [
+          this.ciLike('nombre_usuario', text),
+          this.ciLike('apellido_usuario', text),
+          this.ciLike('dni_usuario', text),        // numérico -> CAST + LOWER ok
+          this.ciLike('celular_usuario', text),   // numérico -> CAST + LOWER ok
+          this.ciLike('email_usuario', text),
+          this.ciLike('usuario', text)
+        ]
+      });
+    }
+
+    const results = await this.usuario.findAll({
+      where: whereParts.length ? { [Op.and]: whereParts } : undefined,
+      attributes: [
+        'id_usuario',
+        'nombre_usuario',
+        'apellido_usuario',
+        'dni_usuario',
+        'celular_usuario',
+        'email_usuario',
+        'usuario'
+      ],
+      order: [
+        ['apellido_usuario', 'ASC'],
+        ['nombre_usuario', 'ASC'],
+        ['id_usuario', 'ASC']
+      ],
+      limit: Math.min(Number(limit) || 10, 100),
+      offset: Number(offset) || 0
+    });
+
+    return results;
+  }
+
+
 
 };
 module.exports = UsuarioService;

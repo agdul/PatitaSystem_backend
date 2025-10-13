@@ -6,7 +6,7 @@ const AppError = require('../utilits/helpers/errors');
 
 class usuarioController{
 
-//---------------------------------------------------------------
+// ---------------------------------------------------------------
 //        *** CRUD ***
     static async getUsuario(req, res){
         try {
@@ -77,7 +77,49 @@ class usuarioController{
             res.status(500).json({ message: 'Error interno del servidor', error: error.message });
         }
     };
-    //---------------------------------------------------------------
+// ---------------------------------------------------------------
+
+
+
+// ---------------------------------------------------------------
+//        *** BUSQUEDA / FILTRADO ***
+
+    static async listUsuarios(req, res) {
+        try {
+            if (!req.query) {
+                return res.status(400).json({ message: 'Parámetros de búsqueda son requeridos' });
+            }
+            const { q, email, dni, telefono, limit, offset } = req.query;
+            const usuario = await UsuarioController.listUsuarios({
+               q, email, dni, telefono,
+               limit: Number(limit), offset: Number(offset)
+             });
+            res.status(200).json(usuario);
+        } catch (error) {
+            console.error('❌ Error al buscar usuarios:', error);
+            if (error instanceof AppError) {
+                return res.status(error.statusCode).json({ message: error.message });
+            }
+            res.status(500).json({ message: 'Error interno del servidor', error: error.message });
+            
+        }
+    }
+
+
+    static async getUsuarioByEmail(req, res) {
+        try {
+            const { email } = req.params;   
+            const usuario = await UsuarioController.getByEmail(email);
+            res.status(200).json(usuario);
+        } catch (error) {
+            console.error('❌ Error al buscar usuario por email:', error);
+            if (error instanceof AppError) {
+                return res.status(error.statusCode).json({ message: error.message });
+            }
+            res.status(500).json({ message: 'Error interno del servidor', error: error.message });
+        }
+    }
+
 };
 
 module.exports = usuarioController;

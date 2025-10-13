@@ -78,6 +78,58 @@ class  UsuarioController{
             throw error;
         }
     };
+
+
+    // ---------------------------------------------------------------
+    //        *** BUSQUEDA / FILTRADO ***
+
+    /**
+        * Mapea a DTO "resumen" para autocompletar/búsquedas rápidas.
+     */
+    static toResumenDto(u) {
+        return {
+        id_usuario: u.id_usuario,
+        nombre_usuario: u.nombre_usuario,
+        apellido_usuario: u.apellido_usuario,
+        dni_usuario: u.dni_usuario,
+        celular_usuario: u.celular_usuario,
+        email_usuario: u.email_usuario,
+        usuario: u.usuario
+        };
+    }
+
+    // ---------------------------------------------------------------
+    static async listUsuarios({ q, email, dni, telefono, limit = 20, offset = 0 }) {
+        try {
+            const query = (q && q.trim().length >= 2) ? q.trim() : null;
+
+            const usuario = await usuarioService.search({
+                q: query,
+                email: email ? email.trim() : null,
+                dni: dni ? dni.trim() : null,
+                telefono: telefono ? telefono.trim() : null,
+                limit: Math.min(Math.max(parseInt(limit) || 20, 1), 100), // entre 1 y 100
+                offset: Math.max(parseInt(offset) || 0, 0)
+            })
+
+            return usuario.map(this.toResumenDto);
+
+        } catch (error) {
+            throw error;  
+        }
+    }
+
+    static async getUsuarioByEmail(email) {
+        try {
+            if (!email || email.trim().length === 0) {
+                throw new AppError('Email es requerido', 400);
+            }
+            const usuario = await UsuarioService.getByEmail(email.trim());
+            return usuario;
+        } catch (error) {
+            throw error;  
+        }
+    }
 }
 
 module.exports = UsuarioController;

@@ -6,15 +6,18 @@ const { authAdmin } = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
-// router.get('/', (req, res) => {
-//     res.json({
-//         message: 'Bienvenido a la API de usuarios'
-//     });
-// });
+// ---------------------------------------------------------------
+// Busqueda / Filtrado Usuarios
+
+// GET /usuarios?q=texto&email=...&dni=...&telefono=...&limit=10&offset=0
+router.get('/search', verificarTokenMiddlerware, authAdmin, UsuarioHandler.listUsuarios);
+
+// GET /usuario/search/by-email/:email
+router.get('/search/by-email/:email', verificarTokenMiddlerware, authAdmin, UsuarioHandler.getUsuarioByEmail);
 
 
 //---------------------------------------------------------------
-// Rutas Usuarios 
+// Rutas Usuarios -- Crud
 //--- Obtener todos los usuarios
 router.get('/', verificarTokenMiddlerware, authAdmin, UsuarioHandler.getUsuario);
 
@@ -30,7 +33,6 @@ router.put('/:id', verificarTokenMiddlerware, authAdmin, UsuarioHandler.updateUs
 //--- Eliminar un usuario
 router.delete('/:id', verificarTokenMiddlerware, authAdmin, UsuarioHandler.deleteUsuario);
 //---------------------------------------------------------------
-
 
 
 
