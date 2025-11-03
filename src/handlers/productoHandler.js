@@ -69,7 +69,6 @@ class productoHandler{
         }
     };
 
-
     async verificarProductoActivo(id_producto) {
     const producto = await db.Producto.findByPk(id_producto);
     if (!producto) {
@@ -79,7 +78,50 @@ class productoHandler{
         throw new AppError('El producto no está activo', 400);
     }
     return producto;
-}
+    };
+
+
+    // ---------------------------------------------------------------------
+    //      *** Busqueda / Filtrado Productos ***
+
+    static async listProductos(req, res) {
+        try {
+            if (!req.query) {
+                return res.status(400).json({ message: 'Parámetros de búsqueda son requeridos' });
+            }
+            // No es necesario exista categoria para hacer la busqueda
+            const { q, categoria, estado } = req.query;
+
+            // Normalizar el paginado 
+
+            const limit = Math.min(Math.max(parseInt(req.query.limit || 20, 1), 100)) // Máximo 100
+            const offset = Math.max(parseInt(req.query.offset || 0, 0)); // Mínimo 0
+
+            // ver como compatibilizar con la validacion de 2 caracteres min en el paramentro q
+            if (!q || q.trim().length < 2) {
+                return res.status(400).json({ message: 'El parámetro de búsqueda es requerido y debe tener al menos 2 caracteres' });
+            }
+
+            const productos = await ProductoController.listProductos({
+                q,
+                categoria: categoria ? categoria.trim() : null,
+                estado: estado !== undefined ? estado : null,
+                limit,
+                offset
+                
+            });
+
+            res.status(200).json(productos);
+        } catch (error) {
+            console.error('❌ Error al buscar los productos:', error);
+            if (error instanceof AppError) {
+                return res.status(error.statusCode).json({ message: error.message });
+            }
+            res.status(500).json({ message: 'Error interno del servidor', error: error.message });
+        }
+    };
+
+
 
 };
 

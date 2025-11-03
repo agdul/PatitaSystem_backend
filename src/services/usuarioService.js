@@ -214,9 +214,6 @@ class UsuarioService {
     };
 
 
-
-
-
 // Búsqueda y filtrado de usuarios (MSSQL-friendly)
   /**
    * search: búsqueda incremental + filtros exactos
@@ -230,7 +227,7 @@ class UsuarioService {
    * Devuelve un set "liviano" ideal para autocompletar.
    * Ajustá los nombres de columna si en tu modelo difieren.
    */
-async search({ q, email, dni, telefono, limit = 10, offset = 0 }) {
+    async search({ q, email, dni, telefono, limit = 10, offset = 0 }) {
     const whereParts = [];
 
     if (email) whereParts.push({ email_usuario: String(email).trim() });

@@ -37,9 +37,15 @@ class CategoriaHandler {
     static async createCategoria (req, res) {
         try {
             await CategoriaHandler.validarEmptyBody(req, res);
-            const data = req.body;
-            console.log('data', data);
-            const categoria = await CategoriaController.createCategoria(data);
+            const {id_linea , nombre_categoria} = req.body;
+            
+
+            console.log('data:' , id_linea , nombre_categoria);
+            
+            if (!id_linea || !nombre_categoria) {
+                throw new AppError('Faltan datos obligatorios: id_linea y nombre_categoria son requeridos', 400);
+            }
+            const categoria = await CategoriaController.createCategoria(id_linea, nombre_categoria);
             res.status(201).json(categoria);
         } catch (error) {
             if (error instanceof AppError) {

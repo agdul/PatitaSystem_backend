@@ -50,21 +50,19 @@ class CategoriaService {
     try {
       const categoria = await this.categoria.findOne({
         where: {
-          nombre_categoria: {
-            [Op.iLike]: `%${nombre_categoria}%`,
-          },
+          nombre_categoria: nombre_categoria,
         },
       });
       return categoria;
     } catch (error) {
-      throw new AppError("Error al buscar la categoría", 500);
+      throw new AppError("Error al obtener la categoria por nombre", 500);
     }
   }
 
-  async create(data) {
+  async create(id_linea, nombre_categoria) {
     const t = await db.sequelize.transaction();
     try {
-      const { nombre_categoria, id_linea } = data;  
+ 
     //-----------------------------------------------------------
       //-------------- Validaciones -----------------------------
       await this.nombreExiste(nombre_categoria);
@@ -154,6 +152,7 @@ class CategoriaService {
       if (categoria) {
         throw new AppError("El nombre de la categoría ya está en uso", 400);
       }
+      return true; // true si está disponible para otro
     } catch (error) {
       if (error instanceof AppError) throw error; // si ya es un AppError, relanzarlo
       throw new AppError("Error al verificar existencia del nombre", 500);

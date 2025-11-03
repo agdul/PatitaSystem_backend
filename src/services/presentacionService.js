@@ -142,9 +142,9 @@ class PresentacionService {
   // Descontar
   presentacion.stock -= cantidad;
   await presentacion.save(options);
- }
+  }
 
- async verificarStockDisponible(id_presentacion, cantidadSolicitada) {
+  async verificarStockDisponible(id_presentacion, cantidadSolicitada) {
   const presentacion = await this.presentacion.findOne({
     where: { id_presentacion }
   });
@@ -159,6 +159,21 @@ class PresentacionService {
 
   return true;
   }
+
+  // async verificarEstadoProducto(id_producto) {
+  //   try {
+  //     const producto = await productoService.existeById(id_producto);
+  //    const estado = producto.estado_producto;
+  //     if (!(producto.estado === 1 || estado === '1')) {
+  //       throw new AppError('El producto no está activo', 400);
+  //     }
+  //     return producto;
+  //   } catch (error) {
+  //     if (error instanceof AppError) throw error;
+  //     throw new AppError("Error al verificar estado del producto", 500);
+  //   }
+  // }
+
 
 
 

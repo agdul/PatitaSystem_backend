@@ -35,9 +35,11 @@ class PresentacionController {
       const { nombre_presentacion, id_producto } = data;
       const productoExiste = await productoService.existeById(id_producto);
       if (!productoExiste) {
-        throw new AppError("El producto por id url no existe", 404);
+        throw new AppError("El producto por id no existe", 404);
       }
       await this.existeByNombre(nombre_presentacion);
+      await productoService.verificarProductoActivo(id_producto);
+      
       return await presentacionService.create(data);
     } catch (error) {
       throw error;
@@ -77,7 +79,7 @@ class PresentacionController {
         await t.rollback();
         throw error;
     }
-}
+  }
   static async delete(id_presentacion) {
     try {
       return await presentacionService.delete(id_presentacion);
@@ -133,6 +135,8 @@ class PresentacionController {
       throw error;
     }
   }
+
+  
 }
 
 module.exports = PresentacionController;

@@ -57,10 +57,32 @@ class PresentacionHandler {
         try {
             const { id } = req.params;
             const data = req.body;
+            //console.log('Datos recibidos para crear presentación:', data);
             if (!data || Object.keys(data).length === 0) {
                 return res.status(400).json({ message: 'Datos de la presentación requeridos' });
             }
             data.id_producto = id;
+
+
+            // ------------------------------------------------------------
+            //          *** Validaciones ***
+
+            // Validar campo stock enteros positivos con el 0 incluido
+            if (data.stock == null || isNaN(data.stock) || !Number.isInteger(data.stock) || data.stock < 0) {
+                return res.status(400).json({ message: 'El stock de la presentación debe ser un número entero positivo o cero' });
+            }
+
+            // Validar campo precio_compra float positivo con el 0 incluido
+            if (data.precio_compra == null || isNaN(data.precio_compra) || parseFloat(data.precio_compra) < 0) {
+                return res.status(400).json({ message: 'El precio de compra de la presentación debe ser un número positivo o cero' });
+            }
+
+            // Validar campo porcentaje_aumento float positivo con el 0 incluido hasta el 100
+            if (data.porcentaje_aumento == null || isNaN(data.porcentaje_aumento) || parseFloat(data.porcentaje_aumento) < 0 || parseFloat(data.porcentaje_aumento) > 100) {
+                return res.status(400).json({ message: 'El porcentaje de aumento de la presentación debe ser un número entre 0 y 100' });
+            }
+
+            // ------------------------------------------------------------
             const presentacion = await PresentacionController.create(data);
             res.status(201).json(presentacion);
         } catch (error) {

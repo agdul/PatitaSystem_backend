@@ -7,7 +7,20 @@ const { authAdmin } = require('../middleware/authMiddleware');
 
 
 const router = Router();
- 
+
+
+
+
+// ---------------------------------------------------------------------
+// Busqueda / Filtrado Productos
+
+// GET /producto/search?q=texto&categoria=...&limit=10&offset=0
+router.get('/search', ProductoHandler.listProductos);
+
+// GET /producto/presentacion/search?q=texto&limit=10&offset=0
+//router.get('/presentacion/search', PresentacionHandler.listPresentaciones);
+
+
 router.get('/presentacion', PresentacionHandler.getTodasPresentaciones);
 router.get('/:id/presentacion', PresentacionHandler.getAllByProducto);
 router.get('/:id/presentacion/:id_presentacion', PresentacionHandler.getPresentacion);

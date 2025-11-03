@@ -30,9 +30,9 @@ class CategoriaController {
       throw error;
     }
   }
-  static async createCategoria(data) {
+  static async createCategoria(id_linea, nombre_categoria) {
     try {
-      const nuevaCategoria = await categorianService.create(data);
+      const nuevaCategoria = await categorianService.create(id_linea, nombre_categoria);
       if (!nuevaCategoria) {
         throw new AppError("Error al crear la categoría", 400);
       }

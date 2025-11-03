@@ -13,7 +13,7 @@ class ProductoController {
     } catch (error) {
       throw error;
     }
-  }
+  };
 
   static async getById(id_producto) {
     try {
@@ -22,7 +22,7 @@ class ProductoController {
     } catch (error) {
       throw error;
     }
-  }
+  };
 
   static async create(data) {
     try {
@@ -36,7 +36,7 @@ class ProductoController {
     } catch (error) {
       throw error;
     }
-  }
+  };
 
   static async update(id, data) {
     try {
@@ -60,7 +60,7 @@ class ProductoController {
     } catch (error) {
       throw error;
     }
-  }
+  };
 
   static async delete(id_producto) {
     try {
@@ -69,7 +69,7 @@ class ProductoController {
     } catch (error) {
       throw error;
     }
-  }
+  };
 
   static async existeByNombre(nombre_producto) {
     try {
@@ -83,7 +83,7 @@ class ProductoController {
     } catch (error) {
       throw error;
     }
-  }
+  };
 
   static async existeById(id_producto) {
     try {
@@ -95,7 +95,47 @@ class ProductoController {
     } catch (error) {
       throw error;
     }
+  };
+
+  // ---------------------------------------------------------------
+  //        *** Helper ***
+
+ static toResumeDto(producto) {
+    const estadoRaw = producto.estado_producto; // "1" | "0" (string) o boolean
+    const activo = String(estadoRaw) === '1' || estadoRaw === true;
+
+    return {
+      id_producto: producto.id_producto,
+      nombre_producto: producto.nombre_producto,
+      id_categoria: producto.id_categoria,
+      estado_producto: estadoRaw,
+      activo, // boolean normalizado (útil para WinForms)
+      categoria: producto.categoria ? producto.categoria.nombre_categoria : undefined
+    };
   }
+
+// ----------------------------------------------------------------
+//       *** Busqueda // Filtro ***
+
+static async listProductos({ q, categoria, estado, limit = 20, offset = 0 }) {
+  try {
+    const query = q && q.trim().length >= 2 ? q.trim() : (q ? q.trim() : null);
+
+    const productos = await productoService.search({
+      q: query,
+      categoria: categoria ? String(categoria).trim() : null,
+      estado: estado !== undefined ? estado : null,
+      limit,
+      offset
+    });
+
+    return productos.map(this.toResumeDto);
+
+  } catch (error) {
+    throw error; 
+  }
+}
+
 }
 
 module.exports = ProductoController;
